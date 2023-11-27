@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Layered Image Viewer</title>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      position: relative;
+    }
+
+    #container {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .image {
+      max-width: 100%;
+      max-height: 100%;
+      position: absolute;
+    }
+
+    #overlay-image {
+      z-index: 1;
+    }
+
+    #underlay-image {
+      z-index: 0;
+    }
+
+    #mirror {
+      position: absolute;
+      width: 50px; /* Initial width */
+      height: 50px; /* Initial height */
+      background-color: rgba(255, 255, 255, 0.8);
+      border: 2px solid #ccc;
+      cursor: move;
+      z-index: 2;
+    }
+
+    #mirror-content {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    #mirror-image {
+      max-width: 100%;
+      max-height: 100%;
+    }
+
+    button {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      font-size: 16px;
+      cursor: pointer;
+      z-index: 3;
+    }
+  </style>
+</head>
+<body>
+  <div id="container">
+    <img id="underlay-image" class="image" src="https://telegraph-image-bak.pages.dev/file/e01e5a33de465a3a7edfc.png" alt="Underlay Image">
+    <img id="overlay-image" class="image" src="https://telegraph-image-bak.pages.dev/file/900af1ded9657b3c3ec4d.png" alt="Overlay Image">
+  </div>
+
+  <button onclick="createMirror()">Create Mirror</button>
+
+  <script src="https://cdn.jsdelivr.net/npm/div-draggable@0.3.7/dist/div-draggable.bundle.js"></script>
+  <script>
+    const container = document.getElementById('container');
+    const overlayImage = document.getElementById('overlay-image');
+
+    function handleResize() {
+      const rect = container.getBoundingClientRect();
+      const scaleX = window.innerWidth / rect.width;
+      const scaleY = window.innerHeight / rect.height;
+      const scale = Math.min(scaleX, scaleY);
+
+      overlayImage.style.transform = `scale(${scale})`;
+    }
+
+    function handleTabSwitch() {
+      overlayImage.style.display = 'block';
+    }
+
+    function createMirror() {
+      const mirrorDiv = document.createElement('div');
+      mirrorDiv.id = 'mirror';
+
+      const mirrorContent = document.createElement('div');
+      mirrorContent.id = 'mirror-content';
+
+      const mirrorImage = document.createElement('img');
+      mirrorImage.id = 'mirror-image';
+      mirrorImage.src = overlayImage.src;
+
+      mirrorContent.appendChild(mirrorImage);
+      mirrorDiv.appendChild(mirrorContent);
+      document.body.appendChild(mirrorDiv);
+
+      // Make the mirror draggable
+      new DivDraggable(mirrorDiv, { restrict: true });
+    }
+
+    window.addEventListener('resize', handleResize);
+    window.addEventListener('focus', handleTabSwitch);
+    window.addEventListener('blur', () => overlayImage.style.display = 'none');
+
+    handleResize(); // Initial scaling
+  </script>
+</body>
+</html>

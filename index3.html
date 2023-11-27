@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tab 2</title>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+    }
+
+    #container2 {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+    }
+
+    #overlay {
+      position: absolute;
+      width: 150px;
+      height: 150px;
+      background-color: rgba(255, 255, 255, 0.8);
+      border: 2px solid #ccc;
+      cursor: move;
+      z-index: 2;
+    }
+  </style>
+</head>
+<body>
+  <div id="container2">
+    <div id="overlay"></div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/div-draggable@0.3.7/dist/div-draggable.bundle.js"></script>
+  <script>
+    const container2 = document.getElementById('container2');
+    const overlayDiv = document.getElementById('overlay');
+
+    // Make the overlay draggable
+    const overlayDraggable = new DivDraggable(overlayDiv, { restrict: true });
+
+    overlayDraggable.addEventListener('dragmove', () => {
+      // Calculate the position of the overlay relative to the container
+      const rect = container2.getBoundingClientRect();
+      const overlayRect = overlayDiv.getBoundingClientRect();
+      const x = overlayRect.left - rect.left;
+      const y = overlayRect.top - rect.top;
+
+      // Log the position (you can use this information for further actions)
+      console.log(`Position: (${x}, ${y})`);
+    });
+  </script>
+</body>
+</html>

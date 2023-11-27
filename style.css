@@ -1,0 +1,27 @@
+body {
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    position: relative;
+    width: 300px; /* Đặt kích thước container tùy ý */
+    height: 300px; /* Đặt kích thước container tùy ý */
+}
+
+.image {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+}
+
+.image1 {
+    background-image: url('public/image1.png');
+}
+
+.image2 {
+    background-image: url('public/image2.png');
+    opacity: 0.5; /* Điều chỉnh độ mờ của ảnh trong file 2 */
+}
